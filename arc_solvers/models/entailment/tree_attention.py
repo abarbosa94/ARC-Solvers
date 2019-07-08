@@ -154,7 +154,7 @@ class TreeAttention(Model):
             label_logits = mean_phrase_distribution + mean_edge_distribution
         else:
             label_logits = mean_phrase_distribution
-        label_probs = torch.nn.functional.softmax(label_logits)
+        label_probs = torch.nn.functional.softmax(label_logits, dim=-1)
         output_dict = {"label_logits": label_logits, "label_probs": label_probs}
 
         if label is not None:
