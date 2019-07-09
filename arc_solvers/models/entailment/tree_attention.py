@@ -125,7 +125,7 @@ class TreeAttention(Model):
         embedded_premise = self._text_field_embedder(premise)
         premise_mask = get_text_field_mask(premise).float()
         # mask over the nodes. dim: batch x node x node words
-        nodes_mask = get_text_field_mask(nodes)
+        nodes_mask = get_text_field_mask(nodes, num_wrapping_dims=1)
 
         if self._use_encoding_for_node or not self._ignore_edges:
             encoded_premise = self._premise_encoder(embedded_premise, premise_mask)
@@ -229,6 +229,7 @@ class TreeAttention(Model):
             aggregate_node_premise_lstm_representation,
             replace_masked_values(edge_targets.float(), edge_mask, 0))
         # edge label embeddings. dim: batch x edges x edge dim
+        edge_labels = edge_labels.view(edge_labels.shape[0],edge_labels.shape[1],1)
         masked_edge_labels = replace_masked_values(edge_labels.float(), edge_mask, 0).squeeze(
             2).long()
         edge_label_embeddings = self._edge_embedding(masked_edge_labels)
