@@ -2,7 +2,7 @@ from typing import Dict, List, Any
 import json
 import logging
 
-from allennlp.data import Dataset
+from allennlp.data.dataset import Batch
 from overrides import overrides
 
 from allennlp.common import Params
@@ -77,7 +77,7 @@ class ArcMultiChoiceJsonReader(DatasetReader):
 
                 instances.append(self.text_to_instance(item_id, question_text, choice_text_list, answer_id))
 
-        return Dataset(instances)
+        return Batch(instances)
 
 
     @overrides

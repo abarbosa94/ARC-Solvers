@@ -14,7 +14,7 @@ from allennlp.data import Vocabulary
 from allennlp.models.model import Model
 from allennlp.modules import FeedForward
 from allennlp.modules import TextFieldEmbedder
-from allennlp.modules.matrix_attention import MatrixAttention
+from allennlp.modules.matrix_attention import LegacyMatrixAttention
 from allennlp.modules.seq2seq_encoders.seq2seq_encoder import Seq2SeqEncoder
 from allennlp.modules.similarity_functions.similarity_function import SimilarityFunction
 from allennlp.modules.time_distributed import TimeDistributed
@@ -64,7 +64,7 @@ class TreeAttention(Model):
 
         self._text_field_embedder = text_field_embedder
         self._premise_encoder = premise_encoder
-        self._nodes_attention = SingleTimeDistributed(MatrixAttention(attention_similarity), 0)
+        self._nodes_attention = SingleTimeDistributed(LegacyMatrixAttention(attention_similarity), 0)
         self._num_labels = vocab.get_vocab_size(namespace="labels")
         self._phrase_probability = TimeDistributed(phrase_probability)
         self._ignore_edges = ignore_edges

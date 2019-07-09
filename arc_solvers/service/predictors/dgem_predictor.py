@@ -4,7 +4,7 @@ from allennlp.common.util import JsonDict, sanitize
 from allennlp.data.dataset_readers.dataset_reader import DatasetReader
 from allennlp.data.instance import Instance
 from allennlp.models.model import Model
-from allennlp.service.predictors.predictor import Predictor
+from allennlp.predictors.predictor import Predictor
 from overrides import overrides
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -39,7 +39,7 @@ class DgemPredictor(Predictor):
     @overrides
     def predict_json(self, inputs: JsonDict, cuda_device: int = -1):
         instance = self._json_to_instance(inputs)
-        outputs = self._model.forward_on_instance(instance, cuda_device)
+        outputs = self._model.forward_on_instance(instance)
         json_output = inputs
         json_output["score"] = outputs["label_probs"][self._entailment_idx]
         return sanitize(json_output)

@@ -7,5 +7,4 @@ def main(prog: str = None) -> None:
         "tree_attention": "dgem",
         "bidaf": "bidaf_qa"
     }
-    main_allennlp(prog,
-                  predictor_overrides=predictor_overrides)
+    main_allennlp(prog)
