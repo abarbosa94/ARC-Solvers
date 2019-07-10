@@ -7,6 +7,7 @@ from allennlp.common.checks import ConfigurationError
 from allennlp.data import Vocabulary
 from allennlp.models.model import Model
 from allennlp.modules import Seq2SeqEncoder, MatrixAttention, SimilarityFunction
+from allennlp.modules.matrix_attention import LegacyMatrixAttention
 from allennlp.modules import TextFieldEmbedder
 from allennlp.nn import InitializerApplicator
 from allennlp.training.metrics import CategoricalAccuracy
@@ -134,7 +135,7 @@ class QAMultiChoiceMaxAttention(Model):
                                          .format(choice_output_dim,
                                                  tensor_2_dim))
 
-        self._matrix_attention_question_to_choice = MatrixAttention(att_question_to_choice)
+        self._matrix_attention_question_to_choice = LegacyMatrixAttention(att_question_to_choice)
 
         self._accuracy = CategoricalAccuracy()
         self._loss = torch.nn.CrossEntropyLoss()
