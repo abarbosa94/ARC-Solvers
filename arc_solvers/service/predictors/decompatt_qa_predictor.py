@@ -37,7 +37,7 @@ class DecompAttPredictor(Predictor):
     @overrides
     def predict_json(self, inputs: JsonDict, cuda_device: int = -1):
         instance = self._json_to_instance(inputs)
-        outputs = self._model.forward_on_instance(instance, cuda_device)
+        outputs = self._model.forward_on_instance(instance)
         json_output = inputs
         json_output["score"] = outputs["label_probs"][self._entailment_idx]
         return sanitize(json_output)

@@ -229,7 +229,8 @@ class TreeAttention(Model):
             aggregate_node_premise_lstm_representation,
             replace_masked_values(edge_targets.float(), edge_mask, 0))
         # edge label embeddings. dim: batch x edges x edge dim
-        edge_labels = edge_labels.view(edge_labels.shape[0],edge_labels.shape[1],1)
+        #TODO edge_dim shape is the same as edge_sources?
+        edge_labels = edge_labels.view(edge_sources.shape)
         masked_edge_labels = replace_masked_values(edge_labels.float(), edge_mask, 0).squeeze(
             2).long()
         edge_label_embeddings = self._edge_embedding(masked_edge_labels)

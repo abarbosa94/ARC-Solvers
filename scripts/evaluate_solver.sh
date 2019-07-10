@@ -57,11 +57,13 @@ fi
 # Compute entailment predictions for each premise and hypothesis
 if [ ! -f ${entailment_predictions} ]; then
   echo arc_solvers/run.py predict \
+    --include-package arc_solvers \
+    --predict $model_name \
     --output-file ${entailment_predictions}.$$ --silent \
     ${model_dir}/model.tar.gz ${input_file_as_entailment_with_struct}
   python arc_solvers/run.py predict \
     --include-package arc_solvers \
-    --predict dgem \
+    --predict ${model_name} \
     --output-file ${entailment_predictions}.$$ --silent \
     ${model_dir}/model.tar.gz ${input_file_as_entailment_with_struct}
   mv ${entailment_predictions}.$$ ${entailment_predictions}
