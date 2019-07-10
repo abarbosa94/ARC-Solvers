@@ -6,7 +6,7 @@ from allennlp.common.util import JsonDict, sanitize
 from allennlp.data.dataset_readers.dataset_reader import DatasetReader
 from allennlp.data.instance import Instance
 from allennlp.models.model import Model
-from allennlp.service.predictors.predictor import Predictor
+from allennlp.predictors.predictor import Predictor
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import word_tokenize
