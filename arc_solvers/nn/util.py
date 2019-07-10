@@ -122,7 +122,7 @@ def embed_encode_and_aggregate_list_text_field(texts_list: Dict[str, torch.LongT
     embedded_texts_flattened = embedded_texts.view([batch_size * choices_cnt, choice_tokens_cnt, -1])
     # masks
 
-    texts_mask_dim_3 = get_text_field_mask(texts_list).float()
+    texts_mask_dim_3 = get_text_field_mask(texts_list, num_wrapping_dims=1).float()
     texts_mask_flatened = texts_mask_dim_3.view([-1, choice_tokens_cnt])
 
     # context encoding
