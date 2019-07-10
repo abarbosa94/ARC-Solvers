@@ -172,8 +172,9 @@ class QAMultiChoiceMaxAttention(Model):
         loss : torch.FloatTensor, optional
             A scalar loss to be optimised.
         """
-        tmp = choices_list['tokens']
-        tmp = tmp.view(32,4,16)
+
+        #TODO choices_list and question are receiving wrong shape of question
+        # Fix in the future
         encoded_choices_aggregated = embed_encode_and_aggregate_list_text_field(choices_list,
                                                                                 self._text_field_embedder,
                                                                                 self._embeddings_dropout,
