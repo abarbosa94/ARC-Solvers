@@ -45,9 +45,10 @@ fi
 bidaf_output=${input_file_prefix}_qapredictions_bidaf_${model_name}_${run_name}.jsonl
 if [ ! -f ${bidaf_output} ]; then
   python arc_solvers/run.py predict \
+    --include-package arc_solvers \
+    --predict bidaf_qa \
     --output-file ${bidaf_output}.$$ --silent \
-    ${model_dir}/model.tar.gz \
-    ${bidaf_input}
+    ${model_dir}/model.tar.gz ${bidaf_input}
   mv ${bidaf_output}.$$ ${bidaf_output}
 fi
 

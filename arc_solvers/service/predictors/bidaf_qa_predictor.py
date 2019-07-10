@@ -40,7 +40,7 @@ class BidafQaPredictor(Predictor):
     @overrides
     def predict_json(self, inputs: JsonDict, cuda_device: int = -1):
         instance = self._json_to_instance(inputs)
-        outputs = self._model.forward_on_instance(instance, cuda_device)
+        outputs = self._model.forward_on_instance(instance)
         json_output = inputs
         span_str = outputs["best_span_str"]
         # If the file has an answer key, calculate the score
