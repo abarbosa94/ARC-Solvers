@@ -41,5 +41,6 @@ class DgemPredictor(Predictor):
         instance = self._json_to_instance(inputs)
         outputs = self._model.forward_on_instance(instance)
         json_output = inputs
-        json_output["score"] = outputs["label_probs"][self._entailment_idx]
+        #converts numpy32 to float
+        json_output["score"] = float(outputs["label_probs"][self._entailment_idx])
         return sanitize(json_output)

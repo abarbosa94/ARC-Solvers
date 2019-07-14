@@ -282,9 +282,9 @@ class TreeAttention(Model):
         }
 
     @classmethod
-    def from_params(cls, vocab: Vocabulary, params: Params) -> 'TreeAttention':
+    def from_params(cls, params: Params, **extras) -> 'TreeAttention':
         embedder_params = params.pop("text_field_embedder")
-        text_field_embedder = TextFieldEmbedder.from_params(vocab, embedder_params)
+        text_field_embedder = TextFieldEmbedder.from_params(vocab=extras['vocab'], params=embedder_params)
 
         premise_encoder_params = params.pop("premise_encoder", None)
         premise_encoder = Seq2SeqEncoder.from_params(premise_encoder_params)
@@ -293,7 +293,7 @@ class TreeAttention(Model):
         phrase_probability = FeedForward.from_params(params.pop('phrase_probability'))
         edge_probability = FeedForward.from_params(params.pop('edge_probability'))
 
-        edge_embedding = Embedding.from_params(vocab, params.pop('edge_embedding'))
+        edge_embedding = Embedding.from_params(vocab=extras['vocab'], params=params.pop('edge_embedding'))
         use_encoding_for_node = params.pop('use_encoding_for_node')
         ignore_edges = params.pop('ignore_edges', False)
 
@@ -302,7 +302,7 @@ class TreeAttention(Model):
                        if init_params is not None
                        else InitializerApplicator())
 
-        return cls(vocab=vocab,
+        return cls(vocab=extras['vocab'],
                    text_field_embedder=text_field_embedder,
                    phrase_probability=phrase_probability,
                    edge_probability=edge_probability,

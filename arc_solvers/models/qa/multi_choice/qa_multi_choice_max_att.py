@@ -207,9 +207,9 @@ class QAMultiChoiceMaxAttention(Model):
         }
 
     @classmethod
-    def from_params(cls, vocab: Vocabulary, params: Params) -> 'QAMultiChoiceMaxAttention':
+    def from_params(cls, params: Params, **extras) -> 'QAMultiChoiceMaxAttention':
         embedder_params = params.pop("text_field_embedder")
-        text_field_embedder = TextFieldEmbedder.from_params(vocab, embedder_params)
+        text_field_embedder = TextFieldEmbedder.from_params(vocab=extras['vocab'], params=embedder_params)
 
         embeddings_dropout_value = params.pop("embeddings_dropout", 0.0)
 
@@ -219,7 +219,7 @@ class QAMultiChoiceMaxAttention(Model):
         share_encoders = params.pop("share_encoders", False)
 
         if question_encoder_params is not None:
-            question_encoder = Seq2SeqEncoder.from_params(question_encoder_params)
+            question_encoder = Seq2SeqEncoder.from_params(params=question_encoder_params)
         else:
             question_encoder = None
 
@@ -238,15 +238,14 @@ class QAMultiChoiceMaxAttention(Model):
 
         # question to choice attention
         att_question_to_choice_params = params.get("att_question_to_choice")
-        att_question_to_choice = SimilarityFunction.from_params(att_question_to_choice_params)
+        att_question_to_choice = SimilarityFunction.from_params(params=att_question_to_choice_params)
 
         init_params = params.pop('initializer', None)
         initializer = (InitializerApplicator.from_params(init_params)
                        if init_params is not None
                        else InitializerApplicator())
 
-
-        return cls(vocab=vocab,
+        return cls(vocab=extras['vocab'],
                    text_field_embedder=text_field_embedder,
                    question_encoder=question_encoder,
                    choice_encoder=choice_encoder,

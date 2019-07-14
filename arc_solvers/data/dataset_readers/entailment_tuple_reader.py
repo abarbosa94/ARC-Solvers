@@ -261,13 +261,14 @@ class EntailmentTupleReader(DatasetReader):
                         "but", "up", "out", "around", "down", "off", "above", "near"]
 
     @classmethod
-    def from_params(cls, params: Params) -> 'EntailmentTupleReader':
+    def from_params(cls, params: Params, **extras) -> 'EntailmentTupleReader':
         tokenizer = Tokenizer.from_params(params.pop('tokenizer', {}))
-        token_indexers = TokenIndexer.dict_from_params(params.pop('token_indexers', {}))
+        token_indexers = params.pop('token_indexers', {})
+        token_indexers = TokenIndexer.from_params(token_indexers.pop('tokens', {}))
         max_tuples = params.pop('max_tuples', 30)
         max_tokens = params.pop('max_tokens', 200)
         params.assert_empty(cls.__name__)
         return EntailmentTupleReader(max_tokens=max_tokens,
                                      max_tuples=max_tuples,
                                      tokenizer=tokenizer,
-                                     token_indexers=token_indexers)
+                                     token_indexers={'tokens': token_indexers})

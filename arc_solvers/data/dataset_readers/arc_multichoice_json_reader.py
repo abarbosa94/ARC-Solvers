@@ -46,7 +46,7 @@ class ArcMultiChoiceJsonReader(DatasetReader):
                  token_indexers: Dict[str, TokenIndexer] = None) -> None:
         super().__init__()
         self._tokenizer = tokenizer or WordTokenizer()
-        self._token_indexers = token_indexers or {'tokens': SingleIdTokenIndexer()}
+        self._token_indexers = {'tokens': token_indexers} or {'tokens': SingleIdTokenIndexer()}
 
     @overrides
     def read(self, file_path: str):
@@ -107,9 +107,11 @@ class ArcMultiChoiceJsonReader(DatasetReader):
         return Instance(fields)
 
     @classmethod
-    def from_params(cls, params: Params) -> 'ArcMultiChoiceJsonReader':
+    def from_params(cls, params: Params, **extras) -> 'ArcMultiChoiceJsonReader':
         tokenizer = Tokenizer.from_params(params.pop('tokenizer', {}))
-        token_indexers = TokenIndexer.dict_from_params(params.pop('token_indexers', {}))
+        token_indexers = params.pop('token_indexers', {})
+        #Keep aware of this: it should be able to handle the dict directly
+        token_indexers = token_indexers.pop('tokens', {})
+        token_indexers = TokenIndexer.from_params(params=token_indexers)
 
-        return ArcMultiChoiceJsonReader(tokenizer=tokenizer,
-                          token_indexers=token_indexers)
+        return ArcMultiChoiceJsonReader(tokenizer=tokenizer, token_indexers=token_indexers)
