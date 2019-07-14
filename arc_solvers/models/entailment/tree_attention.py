@@ -20,7 +20,7 @@ from allennlp.modules.similarity_functions.similarity_function import Similarity
 from allennlp.modules.time_distributed import TimeDistributed
 from allennlp.modules.token_embedders.embedding import Embedding
 from allennlp.nn import InitializerApplicator
-from allennlp.nn.util import get_text_field_mask, last_dim_softmax, weighted_sum, \
+from allennlp.nn.util import get_text_field_mask, masked_softmax, weighted_sum, \
     replace_masked_values
 from allennlp.training.metrics import CategoricalAccuracy
 from numpy.core.arrayprint import array2string, set_printoptions
@@ -174,7 +174,7 @@ class TreeAttention(Model):
         # attention for each node. dim: batch x nodes x node words x premise words
         node_premise_attention = self._nodes_attention(embedded_nodes, embedded_premise)
 
-        normalized_node_premise_attention = last_dim_softmax(node_premise_attention, premise_mask)
+        normalized_node_premise_attention = masked_softmax(node_premise_attention, premise_mask)
 
         expanded_nodes_mask_premise = nodes_mask.unsqueeze(-1).expand_as(
             normalized_node_premise_attention).float()
